@@ -1,0 +1,8 @@
+name: 'web3_analytics'
+version: '1.0.0'
+config-version: 2
+profile: 'web3_profile'
+model-paths: ["models"]
+models:
+  web3_analytics:
+    materialized: table

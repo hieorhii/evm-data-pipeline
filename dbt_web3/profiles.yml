@@ -1,0 +1,10 @@
+web3_profile:
+  target: dev
+  outputs:
+    dev:
+      type: clickhouse
+      schema: web3_dwh
+      host: clickhouse
+      port: 8123
+      user: default
+      password: ''

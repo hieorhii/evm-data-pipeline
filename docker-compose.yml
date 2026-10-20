@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    restart: always
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:23.8
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./clickhouse_init/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+
+  airflow:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./dbt_web3:/opt/airflow/dbt_web3
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    command: bash -c "airflow db init && airflow users create --username admin --password admin --firstname Admin --lastname Admin --role Admin --email admin@example.com && airflow standalone"
+    depends_on:
+      - mongo
+      - clickhouse
